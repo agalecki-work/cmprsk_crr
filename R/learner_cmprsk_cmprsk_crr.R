@@ -279,9 +279,6 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
   print("pv1---")
   print(pv)
   
-  args$maxiter = pv$maxiter %??% 10L
-  args$gtol = pv$gtol  %??% 1e-6
-  
 
   # List with cmprsk.crr arguments initialized
   arg_names = c("cov1", "cov2", "tf", 
@@ -300,7 +297,10 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
   target_df = task$data(cols = target_names)
   cov2_info = pv$cov2_info
  
-    # Create list with cov1 and/or cov2
+  args$maxiter = pv$maxiter %??% 10L
+  args$gtol = pv$gtol  %??% 1e-6
+  
+  # Create list with cov1 and/or cov2
     xcov_list = private$.create_xcov(task, cov2_info)
     print(str(xcov_list))
     args = insert_named(args, xcov_list)
@@ -336,7 +336,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
              failcode = uei
           )   
              .args = insert_named(args1, args)
-           print(str(.args))  
+             
            rlang::exec(cmprsk::crr,!!!.args)       
          })
 
