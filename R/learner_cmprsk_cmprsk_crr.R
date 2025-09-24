@@ -119,17 +119,19 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       censor_group = p_uty(default = NULL, tags = c("train")),
       cov2_info = p_uty(default = NULL, tags = c("train", "predict")) 
     )
+    
+    param_set$values = list(
+      # maxiter = 10L,
+      #  gtol = 1e-6,
+      variance = TRUE,
+      na.action = stats::na.omit
+      #  init_list = NULL,
+      #  censor_group = NULL,
+      #  cov2_info = NULL
+    )
  
-  #param_set$values = list(
-  #  maxiter = 10L,
-  #  gtol = 1e-6,
-  #  variance = TRUE,
-  #  na.action = stats::na.omit,
-  #  init_list = NULL,
-  #  censor_group = NULL,
-  #  cov2_info = NULL
-  #)
-
+ 
+  
      super$initialize(
       id = "cmprsk.crr",
       predict_types = "cif",
@@ -271,12 +273,20 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
 
   logger$debug("%s STARTS", func)
    # Parameter Extraction
-   # print(str(self$param_set))
-   pv = self$param_set$get_values(tags = "train")
+   
   
-  print("pv---")
+  pv = self$param_set$get_values(tags = "train")
+  
+  print("pv1---")
+  print(pv)
+  
+  pv$maxiter = pv$maxiter %??% 10L
+  pv$gtol = pv$gtol  %??% 1e-6
+  
+  print("pv2---")
   print(pv)
  
+  
   # List with cmprsk.crr arguments initialized
   arg_names = c("cov1", "cov2", "tf", 
                "cengroup",
