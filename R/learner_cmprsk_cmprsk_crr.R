@@ -318,6 +318,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
   ## na.action = pv$na.action 
     # init_list <- pv$init_list
     args$variance = pv$variance
+    args$na.action = pv$na.action
     print("----args before the loop")
     print(names(args))
     print(str(args))
