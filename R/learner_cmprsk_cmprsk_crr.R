@@ -14,7 +14,7 @@
 #' \describe{
 #'   \item{maxiter}{(`integer(1)`)\cr Maximum number of iterations for convergence.}
 #'   \item{gtol}{(`numeric(1)`)\cr Convergence tolerance for gradient.}
-#`   \item{na.action){
+#`   \item{na.action){`logical`)\cr ??? .)  
 #'   \item{init_list}{(`list()`)\cr Initial values for model coefficients, named by event type.}
 #'   \item{censor_group}{(`character(0)`)\cr Censoring group column name, if any.}
 #'   \item{cov2_info}{(`list()`)\cr Information for time-varying covariates, including `feat2` (names) and `tf` (transformation function).}
@@ -272,21 +272,17 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
   func = "[cmprsk.crr] private$.train: "
 
   logger$debug("%s STARTS", func)
-   # Parameter Extraction
+  # Parameter Extraction
    
-  
   pv = self$param_set$get_values(tags = "train")
   
   print("pv1---")
   print(pv)
   
-  pv$maxiter = pv$maxiter %??% 10L
-  pv$gtol = pv$gtol  %??% 1e-6
+  args$maxiter = pv$maxiter %??% 10L
+  args$gtol = pv$gtol  %??% 1e-6
   
-  print("pv2---")
-  print(pv)
- 
-  
+
   # List with cmprsk.crr arguments initialized
   arg_names = c("cov1", "cov2", "tf", 
                "cengroup",
@@ -302,7 +298,6 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
   
   target_names = task$target_names
   target_df = task$data(cols = target_names)
-    
   cov2_info = pv$cov2_info
  
     # Create list with cov1 and/or cov2
@@ -319,6 +314,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
         cengroup = NULL
       } 
   args$cengroup = cengroup
+  
   ## na.action = pv$na.action 
     # init_list <- pv$init_list
     args$variance = pv$variance
@@ -332,6 +328,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
            logger$debug("%s Training for cause = %s", func, uei)
            args$init = if (!is.null(pv$init_list)) pv$init_list[[uei]] else NULL
            
+           
            args1 = list(
              ftime = target_df[[1]],
              fstatus = target_df[[2]],
@@ -339,7 +336,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
              failcode = uei
           )   
              .args = insert_named(args1, args)
-             
+           print(str(.args))  
            rlang::exec(cmprsk::crr,!!!.args)       
          })
 
