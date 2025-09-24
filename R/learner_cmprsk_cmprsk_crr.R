@@ -336,7 +336,10 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
              failcode = uei
           )   
              .args = insert_named(args1, args)
-             
+                print("----.args inside the loop")
+	         print(names(.args))
+	         print(str(.args))
+ 
            rlang::exec(cmprsk::crr,!!!.args)       
          })
 
