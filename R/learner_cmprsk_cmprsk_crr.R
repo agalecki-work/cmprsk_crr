@@ -247,16 +247,19 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
     },
     
  .add_to_args = function(args = list(), object = NULL) {
+     logger <- lgr::get_logger("mlr3")
+     func <- "[cmprsk.crr] private$..add_to_args: "
+      logger$debug("%s STARTS", func)
+ 
    # If object is NULL, return args unchanged
    if (is.null(object)) {
      return(args)
    }
-   
-   # Get the name of the object
    obj_name <- deparse(substitute(object))
-   print("--- .add_to_args obj_name")
-   print(obj_name)
-   
+   logger$debug("%s Object name ", obj_name)
+ 
+   # Get the name of the object
+  
    # If object is a list, remove NULL elements and append to args
    if (is.list(object)) {
      # Filter out NULL elements
