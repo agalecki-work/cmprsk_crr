@@ -278,6 +278,8 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       # Create list with cov1 and/or cov2
       args = list()
       xcov_args = private$.create_xcov(task, cov2_info)
+      print("===xcov_args")
+      print(names(xcov_args))
       print(str(xcov_args))
       cov1 = xcov_args$cov1
       #names(cov1) = "cov1"
