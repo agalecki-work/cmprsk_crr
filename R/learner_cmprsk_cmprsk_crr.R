@@ -254,6 +254,8 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
    
    # Get the name of the object
    obj_name <- deparse(substitute(object))
+   print("--- .add_to_args obj_name")
+   print(obj_name)
    
    # If object is a list, remove NULL elements and append to args
    if (is.list(object)) {
@@ -266,7 +268,9 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
    # If object is not a list, add it as a named component to args
    args[[obj_name]] <- object
    return(args)
-},
+}
+
+,
   
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
