@@ -205,6 +205,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
 
       return(xcov_list)
     },
+    
     .check_cov2_info = function(cov2_info, feature_names, uft) {
       logger <- lgr::get_logger("mlr3")
       func <- "[cmprsk:crr] private$.check_cov2_info"
@@ -245,16 +246,16 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       return(TRUE)
     },
     
-   .add_to_args <- function(args = list(), x = NULL) {
-     print(names(args))
-     print(str(x))
-     if (is.null(x)) {
-       return(args)
-     }
-     print(str(setNames(list(x), deparse(substitute(x)))))
-    mlr3misc::insert_named(args, setNames(list(x), deparse(substitute(x))))
-   },
+  .add_to_args <- function(args = list(), x = NULL) {
+    if (is.null(x)) {
+      return(args)
+    }
+    xlist =  setNames(list(x), deparse(substitute(x)))
+    print("---- xlist---")
+    print(str(xlist))
     
+    mlr3misc::insert_named(args, xlist)
+  },  
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
       func <- "[cmprsk.crr] private$.train: "
@@ -277,8 +278,14 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       xcov_args = private$.create_xcov(task, cov2_info)
       print(str(xcov_args))
       cov1 = xcov_args$cov1
+      #names(cov1) = "cov1"
+      print("==== cov1 ===")
+
+      print(str(cov1))
       args = private$.add_to_args(args, cov1) 
       cov2 = xcov_args$cov2
+      print("==== cov2 ===")
+      print(str(cov2))
       args = private$.add_to_args(args, cov2) 
       tf = cov2_info$tf
       args = private$.add_to_args(args, tf) 
