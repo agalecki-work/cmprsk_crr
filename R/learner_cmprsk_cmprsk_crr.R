@@ -252,6 +252,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
     }
     xlist =  setNames(list(x), deparse(substitute(x)))
     print("---- xlist---")
+    print(names(xlist))
     print(str(xlist))
     
     mlr3misc::insert_named(args, xlist)
