@@ -267,7 +267,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
 
       pv <- self$param_set$get_values(tags = "train")
 
-      print("pv1---")
+      message("pv1---msg")
       print(pv)
       
       target_names <- task$target_names
@@ -278,7 +278,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       # Create list with cov1 and/or cov2
       args = list()
       xcov_args = private$.create_xcov(task, cov2_info)
-      print("===xcov_args")
+      message("===xcov_args")
       print(names(xcov_args))
       print(str(xcov_args))
       cov1 = xcov_args$cov1
