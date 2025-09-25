@@ -269,8 +269,11 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
    }
    
    # If object is not a list, add it as a named component to args
-   args[[obj_name]] <- object
-   return(args)
+   # args[[obj_name]] <- object
+    tt = list(object)
+    names(tt) = obj_name
+    
+   return(mlr3misc::insert_named(args, tt))
 }
 
 ,
