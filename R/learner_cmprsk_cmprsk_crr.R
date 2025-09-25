@@ -246,31 +246,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       return(TRUE)
     },
     
-  .add_to_args = function(args = list(), x = NULL) {
-    if (is.null(x)) {
-      return(args)
-    }
-      logger <- lgr::get_logger("mlr3")
-      func <- "[cmprsk.crr] private$.add_to_args: "
-     
-       logger$debug("%s Execution STARTS", func)
-  
-      print("----add_to_args #1 ---")
-       print(typeof(x))
-        print(str(x))
-        print(names(x))
-
-    xlist =  if (typeof(x) != "list") setNames(list(x), deparse(substitute(x))) else x
-     print("----add_to_args #2 ---")
-        print(names(xlist))
-       print(str(xlist))
-      print("----add_to_arg#3 ---")
-      
-    res = mlr3misc::insert_named(args, xlist)
-    print("res");
-    print(str(res))
-    res
-  },
+ 
   
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
@@ -315,6 +291,9 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       } else {
         cengroup = NULL
       }
+      
+      print("--- cengroup---")
+      print(str(cengroup))
       args = private$.add_to_args(args, cengroup) 
 
       subset  = NULL  #  a logical vector extracted subset
