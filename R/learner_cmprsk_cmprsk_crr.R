@@ -260,10 +260,10 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
         print(str(x))
         print(names(x))
 
-    olist =  if (typeof(x) != "list") setNames(list(x), deparse(substitute(x))) else xlist
+    xlist =  if (typeof(x) != "list") setNames(list(x), deparse(substitute(x))) else x
      print("----add_to_args2 ---")
-        print(names(olist))
-       print(str(olist))
+        print(names(xlist))
+       print(str(xlist))
       print("----add_to_arg3 ---")
       
     mlr3misc::insert_named(args, olist)
