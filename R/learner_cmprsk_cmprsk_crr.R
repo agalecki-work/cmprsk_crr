@@ -246,7 +246,27 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       return(TRUE)
     },
     
- 
+ .add_to_args = function(args = list(), object = NULL) {
+   # If object is NULL, return args unchanged
+   if (is.null(object)) {
+     return(args)
+   }
+   
+   # Get the name of the object
+   obj_name <- deparse(substitute(object))
+   
+   # If object is a list, remove NULL elements and append to args
+   if (is.list(object)) {
+     # Filter out NULL elements
+     object <- object[!sapply(object, is.null)]
+     # Use mlr3misc::insert to append non-NULL elements to args
+     return(mlr3misc::insert_named(args, object))
+   }
+   
+   # If object is not a list, add it as a named component to args
+   args[[obj_name]] <- object
+   return(args)
+}
   
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
