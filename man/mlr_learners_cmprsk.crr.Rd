@@ -23,19 +23,20 @@ This \link[mlr3:Learner]{Learner} can be instantiated via \link[mlr3:mlr_sugar]{
 \item Task type: \dQuote{cmprsk}
 \item Predict Types: \dQuote{cif}
 \item Feature Types: \dQuote{logical}, \dQuote{integer}, \dQuote{numeric}, \dQuote{factor}
-\item Required Packages: \CRANpkg{mlr3}, \CRANpkg{mlr3proba}, \CRANpkg{cmprsk}
+\item Required Packages: \CRANpkg{mlr3}, \CRANpkg{mlr3proba}, \CRANpkg{mlr3extralearners}, \CRANpkg{cmprsk}
 }
 }
 
 \section{Parameters}{
-\tabular{llll}{
-   Id \tab Type \tab Default \tab Range \cr
-   maxiter \tab integer \tab 10 \tab \eqn{[1, 1000]}{[1, 1000]} \cr
-   gtol \tab numeric \tab 1e-06 \tab \eqn{[1e-09, 0.001]}{[1e-09, 0.001]} \cr
-   na.action \tab untyped \tab stats::na.omit \tab - \cr
-   init_list \tab untyped \tab NULL \tab - \cr
-   censor_group \tab untyped \tab NULL \tab - \cr
-   cov2_info \tab untyped \tab NULL \tab - \cr
+\tabular{lllll}{
+   Id \tab Type \tab Default \tab Levels \tab Range \cr
+   maxiter \tab integer \tab 10 \tab  \tab \eqn{[1, 1000]}{[1, 1000]} \cr
+   gtol \tab numeric \tab 1e-06 \tab  \tab \eqn{[1e-09, 0.001]}{[1e-09, 0.001]} \cr
+   variance \tab logical \tab TRUE \tab TRUE, FALSE \tab - \cr
+   na.action \tab untyped \tab stats::na.omit \tab  \tab - \cr
+   init_list \tab untyped \tab NULL \tab  \tab - \cr
+   censor_group \tab untyped \tab NULL \tab  \tab - \cr
+   cov2_info \tab untyped \tab NULL \tab  \tab - \cr
 }
 }
 
@@ -77,16 +78,16 @@ library(mlr3)
 library(mlr3proba)
 
 # Define the learner
-learner = lrn("cmprsk.crr")
+learner <- lrn("cmprsk.crr")
 print(learner)
 
 # Define a task
-task = tsk("pbc")
+task <- tsk("pbc")
 task$select(c("age", "bili", "sex"))
 task$set_col_roles(cols = "status", add_to = "stratum")
 
 # Create train and test sets
-ids = partition(task)
+ids <- partition(task)
 
 # Train the learner
 learner$train(task, row_ids = ids$train)
@@ -96,7 +97,7 @@ print(learner$model)
 print(learner$convergence())
 
 # Make predictions
-predictions = learner$predict(task, ids$test)
+predictions <- learner$predict(task, ids$test)
 
 # Score the predictions
 predictions$score()

@@ -246,7 +246,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       return(TRUE)
     },
     
-  .add_to_args <- function(args = list(), x = NULL) {
+  .add_to_args = function(args = list(), x = NULL) {
     if (is.null(x)) {
       return(args)
     }
@@ -255,7 +255,8 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
     print(str(xlist))
     
     mlr3misc::insert_named(args, xlist)
-  },  
+  },
+  
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
       func <- "[cmprsk.crr] private$.train: "
