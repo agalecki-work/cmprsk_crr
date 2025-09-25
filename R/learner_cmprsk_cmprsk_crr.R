@@ -250,13 +250,18 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
     if (is.null(x)) {
       return(args)
     }
+      logger <- lgr::get_logger("mlr3")
+      func <- "[cmprsk.crr] private$.train: "
+     
+       logger$debug("%s Execution STARTS", func)
+  
       print("----add_to_args ---")
        print(typeof(x))
         print(str(x))
         print(names(x))
 
-    xlist =  setNames(list(x), deparse(substitute(x)))
-      
+    xlist =  if (!typef(x) == "list") then xlist = setNames(list(x), deparse(substitute(x)))
+       print(names(x))
     mlr3misc::insert_named(args, xlist)
   },
   
