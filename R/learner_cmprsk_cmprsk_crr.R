@@ -255,14 +255,17 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
      
        logger$debug("%s Execution STARTS", func)
   
-      print("----add_to_args ---")
+      print("----add_to_args1 ---")
        print(typeof(x))
         print(str(x))
         print(names(x))
 
     xlist =  if (typeof(x) != "list") xlist = setNames(list(x), deparse(substitute(x)))
-       print(names(xlist))
-       print(str(xlist))_
+     print("----add_to_args2 ---")
+        print(names(xlist))
+       print(str(xlist))
+      print("----add_to_arg3 ---")
+      
     mlr3misc::insert_named(args, xlist)
   },
   
