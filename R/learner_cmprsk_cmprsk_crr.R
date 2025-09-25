@@ -260,7 +260,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
         print(str(x))
         print(names(x))
 
-    xlist =  if (typeof(x) != "list") xlist = setNames(list(x), deparse(substitute(x)))
+    xlist =  if (typeof(x) != "list") setNames(list(x), deparse(substitute(x))) else xlist
      print("----add_to_args2 ---")
         print(names(xlist))
        print(str(xlist))
