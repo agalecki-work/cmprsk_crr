@@ -250,11 +250,13 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
     if (is.null(x)) {
       return(args)
     }
+      print("----add_to_args ---")
+       print(typeof(x))
+        print(str(x))
+        print(names(x))
+
     xlist =  setNames(list(x), deparse(substitute(x)))
-    print("---- xlist---")
-    print(names(xlist))
-    print(str(xlist))
-    
+      
     mlr3misc::insert_named(args, xlist)
   },
   
@@ -278,19 +280,19 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       # Create list with cov1 and/or cov2
       args = list()
       xcov_args = private$.create_xcov(task, cov2_info)
-      message("===xcov_args")
-      print(names(xcov_args))
-      print(str(xcov_args))
-      cov1 = xcov_args$cov1
+      #message("===xcov_args")
+      #print(names(xcov_args))
+      #print(str(xcov_args))
+      #cov1 = xcov_args$cov1
       #names(cov1) = "cov1"
-      print("==== cov1 ===")
+      #print("==== cov1 ===")
 
-      print(str(cov1))
-      args = private$.add_to_args(args, cov1) 
-      cov2 = xcov_args$cov2
-      print("==== cov2 ===")
-      print(str(cov2))
-      args = private$.add_to_args(args, cov2) 
+      #print(str(cov1))
+      args = private$.add_to_args(args, xcov_args) 
+      #cov2 = xcov_args$cov2
+      #print("==== cov2 ===")
+      #print(str(cov2))
+      #args = private$.add_to_args(args, cov2) 
       tf = cov2_info$tf
       args = private$.add_to_args(args, tf) 
 
