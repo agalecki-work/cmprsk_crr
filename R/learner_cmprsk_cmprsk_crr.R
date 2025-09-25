@@ -245,6 +245,16 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       return(TRUE)
     },
     
+   .add_to_args <- function(args = list(), x = NULL) {
+     print(names(args))
+     print(str(x))
+     if (is.null(x)) {
+       return(args)
+     }
+     print(str(setNames(list(x), deparse(substitute(x)))))
+    mlr3misc::insert_named(args, setNames(list(x), deparse(substitute(x))))
+   },
+    
     .train = function(task) {
       logger <- lgr::get_logger("mlr3")
       func <- "[cmprsk.crr] private$.train: "
@@ -256,38 +266,22 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
 
       print("pv1---")
       print(pv)
-
-
-      # List with cmprsk.crr arguments initialized
-      arg_names <- c(
-        "cov1", "cov2", "tf",
-        "cengroup",
-        "subset",
-        "na.action",
-        "gtol",
-        "maxiter",
-        "init",
-        "variance"
-      )
-
-      args <- vector("list", length = length(arg_names))
-      names(args) = arg_names
-
+      
       target_names <- task$target_names
       target_df = task$data(cols = target_names)
+      
       cov2_info = pv$cov2_info
 
-      args$maxiter <- pv$maxiter %??% 10L
-      args$gtol = pv$gtol %??% 1e-6
-
       # Create list with cov1 and/or cov2
+      args = list()
       xcov_args = private$.create_xcov(task, cov2_info)
-      
       print(str(xcov_args))
-      args$cov1 = xcov_args$cov1
-      args$cov2 = xcov_args$cov2
-      args$tf = cov2_info$tf
-
+      cov1 = xcov_args$cov1
+      args = private$.add_to_args(args, cov1) 
+      cov2 = xcov_args$cov2
+      args = private$.add_to_args(args, cov2) 
+      tf = cov2_info$tf
+      args = private$.add_to_args(args, tf) 
 
       if (!is.null(pv$censor_group)) {
         logger$debug("%s censor_group name in backend data is %s", func, pv$censor_group)
@@ -295,11 +289,11 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       } else {
         cengroup = NULL
       }
-      args$cengroup = cengroup
-      args$subset  = NULL  #  a logical vector extracted subset
-      args$na.action = pv$na.action
-      args$variance <- pv$variance
-      args$na.action = pv$na.action
+      args = private$.add_to_args(args, cengroup) 
+
+      subset  = NULL  #  a logical vector extracted subset
+      args = private$.add_to_args(args, subset) 
+
       print("----args before the loop")
       print(names(args))
       print(str(args))
@@ -308,20 +302,22 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
       model = lapply(seq_along(unique_events), function(i) {
         uei = unique_events[i]
         logger$debug("%s Training for cause = %s", func, uei)
-        args$init <- if (!is.null(pv$init_list)) pv$init_list[[uei]] else NULL
-        argsx <- list(
-          ftime = target_df[[1]],
-          fstatus = target_df[[2]],
-          cencode = 0L,
-          failcode = uei
-        )
-        argsm = modifyList(args, argsx)
-        .args = argsm[!sapply(argsm, is.null)]
-        print("----.args inside the loop")
-        print(names(.args))
-        print(str(.args))
+        init = if (!is.null(pv$init_list)) pv$init_list[[uei]] else NULL
+        args = private$.add_to_args(args, cov2) 
+        print("----args inside the loop")
+        print(names(args))
+        print(str(args))
 
-        rlang::exec(cmprsk::crr, !!!.args)
+        rlang::exec(cmprsk::crr,
+          ftime = target_df[[1]],
+	  fstatus = target_df[[2]],
+	  cencode = 0L,
+	  failcode = uei,
+	  na.action = pv$na.action,
+	  maxiter <- pv$maxiter %??% 10L,
+	  gtol = pv$gtol %??% 1e-6,
+	  variance = pv$variance,
+	  !!!args)
       })
 
 
