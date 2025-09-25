@@ -315,8 +315,8 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
           cencode = 0L,
           failcode = uei
         )
-        .args = modifyList(args, argsx)
-        .args = .args[!sapply(.args, is.null)]
+        argsm = modifyList(args, argsx)
+        .args = argsm[!sapply(argsm, is.null)]
         print("----.args inside the loop")
         print(names(.args))
         print(str(.args))
