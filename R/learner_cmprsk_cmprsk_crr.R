@@ -266,7 +266,7 @@ LearnerCompRisksFineGrayCRR <- R6::R6Class(
        print(str(xlist))
       print("----add_to_arg3 ---")
       
-    mlr3misc::insert_named(args, olist)
+    mlr3misc::insert_named(args, xlist)
   },
   
     .train = function(task) {
